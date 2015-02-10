@@ -1,0 +1,44 @@
+#!/bin/bash
+# pre-commit git hook to check the validity of a puppet manifest
+# 
+# Prerequisites:
+#   perlcritic
+# 
+# Install: 
+#  /path/to/repo/.git/hooks/pre-comit
+ 
+echo "### Perl::Critic ###"
+for file in `git diff --name-only --cached | grep -E '\.(pl|pm)'`
+do
+    # Only check new/modified files
+    if [[ -f $file ]]
+    then
+        perlcritic -3 $file
+        # Set us up to bail if we receive any syntax errors
+        if [[ $? -ne 0 ]]
+        then
+            syntax_is_bad=1
+        fi
+    fi
+done
+
+echo "### perl -c FILE ###"
+for file in `git diff --name-only --cached | grep -E '\.(pl|pm)'`
+do
+    # Only check new/modified files
+    if [[ -f $file ]]
+    then
+        perl -c $file
+        # Set us up to bail if we receive any syntax errors
+        if [[ $? -ne 0 ]]
+        then
+            syntax_is_bad=1
+        fi
+    fi
+done
+
+if [[ $syntax_is_bad -eq 1 ]]
+then
+    echo "FATAL: Syntax is bad. See above errors"
+    exit 1
+fi
