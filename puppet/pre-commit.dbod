@@ -1,0 +1,81 @@
+#!/bin/bash
+# pre-commit git hook to check the validity of a puppet manifest
+# 
+# Prerequisites:
+#   (ruby)
+#   gem install puppet-lint puppet
+# 
+# Install: 
+#  /path/to/repo/.git/hooks/pre-comit
+ 
+# Source RVM if needed
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+ 
+echo "### Checking puppet syntax ###"
+for file in `git diff --name-only --cached | grep -E '\.pp'`
+do
+    # Only check new/modified files
+    if [[ -f $file ]]
+    then
+        puppet-lint \
+            --no-autoloader_layout-check \
+            --no-nested_classes_or_defines-check \
+            --no-only_variable_string-check \
+            --no-80chars-check \
+            --with-filename $file
+ 
+        # Set us up to bail if we receive any syntax errors
+        if [[ $? -ne 0 ]]
+        then
+            syntax_is_ugly=1
+        else
+            echo "$file looks good"
+        fi
+    fi
+done
+
+echo ""
+echo "### Checking template syntax ###"
+for file in `git diff --name-only --cached | grep -E '\.erb'`
+do
+    # Only check new/modified files
+    if [[ -f $file ]]
+    then
+        erb -x -T '-' $file | ruby -c
+        # Set us up to bail if we receive any syntax errors
+        if [[ $? -ne 0 ]]
+        then
+            syntax_is_bad=1
+        fi
+    fi
+done
+
+echo ""
+echo "### Checking puppet manifests validity ###"
+for file in `git diff --name-only --cached | grep -E '\.pp'`
+do
+    if [[ -f $file ]] 
+    then
+        puppet parser validate $file
+        if [[ $? -ne 0 ]]
+        then
+            echo "ERROR: puppet parser failed at: $file"
+            syntax_is_bad=1
+        else
+            echo "OK: $file looks valid"
+        fi
+    fi
+done
+echo ""
+
+if [[ $syntax_is_ugly -eq 1 ]]
+then
+    echo "WARNING: Your syntax is not compliant with the standards. Fix that!"
+    echo ""
+fi
+ 
+if [[ $syntax_is_bad -eq 1 ]]
+then
+    echo "FATAL: Syntax is bad. See above errors"
+    exit 1
+fi
