@@ -1,5 +1,5 @@
 #!/bin/bash
-# pre-commit git hook to check the validity of a puppet manifest
+# pre-commit git hook to check the validity of perl files
 # 
 # Prerequisites:
 #   perlcritic
