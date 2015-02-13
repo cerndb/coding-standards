@@ -8,6 +8,13 @@ following both Sun Microsystems and Google coding practices.
 An up to date version of this files can be found 
 [here](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/sun_checks.xml)
 
+## Perl
+
+* **pre-commit** is a pre-commit hook for repositories managing Perl code. 
+It will run **Perl::Critic** and reject the files containing errors with a 
+severity higher than 3. Currently it doesn't run **perl -c** for error checking
+but it will probably will be implemented.
+
 ## Puppet
 
 * **beware.pp** is a Puppet manifest which will showcase different behaviours
@@ -20,8 +27,9 @@ conventions. It will reject files containing commits breaking the parsing and
 allow commits containing syntax deviations, while displaying the output of 
 puppet-lint.
 
-## Perl
+## Ruby
 
-* **pre-commit** is a pre-commit hook for repositories managing Perl code. 
-It will run **Perl::Critic** and reject the files containing errors with a 
-severity higher than 3.
+* **pre-commit** is a pre-commit hook for repositories managing Ruby code. 
+It will run **ruby-lint** analyze syntax and **ruby -c** to check for code errors
+(WARNING: Needs to be tested!)
+
