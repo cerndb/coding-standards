@@ -2,7 +2,7 @@
 Miscelenaeous coding standards or support files to use in IT-DB projects
 
 ## Git
-For the moment you can find [[here][git/INFO.MD]] a list of git configurations
+For the moment you can find [here](https://github.com/CERNdb/coding-standards/blob/master/git/INFO-dbod.md) a list of git configurations
 parameters and conventions expected to be followed when submiting code to
 the DB On Demand related repositories.
 
