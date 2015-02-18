@@ -1,6 +1,11 @@
 # coding-standards
 Miscelenaeous coding standards or support files to use in IT-DB projects
 
+## Git
+For the moment you can find [[here][git/INFO.MD]] a list of git configurations
+parameters and conventions expected to be followed when submiting code to
+the DB On Demand related repositories.
+
 ## Java
 Currently you can find here a couple of configuration files for checkstyle,
 following both Sun Microsystems and Google coding practices.
