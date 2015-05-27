@@ -40,7 +40,7 @@ $line = padded({
 
 ### Implicit returns
 
-**Always return via an explicit *return* **
+**Always return via an explicit _return_**
 
 ### Returning failure
 
