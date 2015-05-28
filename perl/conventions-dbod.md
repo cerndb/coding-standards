@@ -7,6 +7,68 @@ They are mostly taken from Damian Conway's Perl Best Practices, and some
 of them are enforced by the use of *perlcritic* and the provided pre-commit
 hook for Git repositories.
 
+## Code layout
+
+### Indentation
+
+**Use four-column indentation levels**
+
+### Tabs
+
+**Indent with spaces, not tabs**
+
+### Breaking long lines
+
+Try to avoid excesively long lines by breaking them:
+
+```perl
+$ssh = Net::OpenSSH->new("$user\@$host", password => $arg_ref->{password}, master_stdout_discard => 0, master_stderr_discard => 1);
+
+$ssh = Net::OpenSSH->new("$user\@$host",
+        password => $arg_ref->{password},
+        master_stdout_discard => 0,
+        master_stderr_discard => 1);
+```
+## Naming conventions
+
+### Booleans
+
+**Name booleans after their associated test**
+
+Suggestion, use the prefix *is_* or *has_*:
+
+```perl
+sub is_valid;
+sub metadata_available_for;
+sub has_end_tag;
+
+my $loading_finished;
+my $has_found_bad_record;
+```
+
+### Reference variables
+
+**Mark variables that store references with a *_ref* suffix**
+
+### Arrays and hashes
+
+**Name arrays in the plural and hashes in the singular**
+
+```perl
+my %option;
+my $option_ref = \%option;
+my @events;
+my @handlers
+```
+
+### Underscores
+
+**Use undersocres to separate words in multiwords identifiers**
+
+### Utility Subroutines
+
+**Prefix "for internal use only" subroutines with an underscore**
+
 ## Subroutines
 
 ### Named arguments
